@@ -12,9 +12,17 @@ Instead of doing python this python that, run python programs by doing: `uv run 
 uv run main.py
 ```
 
-## adding packages
+## Adding packages
 
 run `uv add <package_name>` e.g.
 ```
 uv add scipy
+```
+
+## Downloading data
+
+I added the point cloud data to a hugging face repository since it's too large to add here ~500 MB. Get the data by running:
+
+```
+uv run download_data.py
 ```
