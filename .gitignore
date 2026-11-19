@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# data
+data/**/*.ply
+
 # Distribution / packaging
 .Python
 build/
@@ -221,3 +224,4 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+data/**/*.ply
