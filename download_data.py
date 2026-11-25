@@ -2,7 +2,7 @@ from pathlib import Path
 from huggingface_hub import snapshot_download
 
 
-def main():
+def main() -> None:
     repo_root = Path(__file__).resolve().parent
     print("Downloading point cloud datasets from Hugging Face...")
 

@@ -1,11 +1,11 @@
-import config
-import transformations as tf
+from . import config
+from . import transformations as tf
 
 import math
 import numpy as np
 
-
-def nonlinear_ode(x, u):
+# Returns derivative of state
+def nonlinear_ode(x, u) -> np.ndarray:
     """
     16 state nonlinear drone with taut tether-suspended payload system
     """
@@ -86,7 +86,7 @@ def nonlinear_ode(x, u):
                      alpha_y_ddot])
 
 
-def payload_state(X):
+def payload_state(X) -> tuple[np.ndarray, np.ndarray]:
     """
     Payload position and velocity in the world frame from a state history.
     """

@@ -1,4 +1,4 @@
-import config
+from . import config
 import numpy as np
 
 
@@ -6,7 +6,8 @@ class ArduPilotFlightController:
     """
     "ME236" classic cascaded control system for the inner-loop
 
-    accepts an acceleration and yaw setpoint valid for SET_POSITION_TARGET_LOCAL_NED
+    Accepts acceleration in the model's +Z-up frame and a yaw setpoint.
+    The small-angle roll/pitch mapping assumes yaw is near zero.
     """
 
     def __init__(self,
@@ -15,7 +16,7 @@ class ArduPilotFlightController:
                  tau_psi=0.5,
                  tau_p=0.05,
                  tau_q=0.05,
-                 tau_r=0.08):
+                 tau_r=0.08) -> None:
 
         self.tau_theta = tau_theta
         self.tau_phi = tau_phi
@@ -24,7 +25,7 @@ class ArduPilotFlightController:
         self.tau_q = tau_q
         self.tau_r = tau_r
 
-    def compute_u(self, x, a_des, yaw_s):
+    def compute_u(self, x, a_des, yaw_s) -> list[float]:
         """
         Computes [C_Sigma, n1, n2, n3] from the acceleration and yaw setpoint
         """

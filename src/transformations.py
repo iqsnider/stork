@@ -12,7 +12,7 @@ T_AB @ v_B == v_A.
 import numpy as np
 
 
-def T_IB(phi, theta, psi):
+def T_IB(phi, theta, psi) -> np.ndarray:
     """
     Rotation to the inertial frame from the body frame
     """
