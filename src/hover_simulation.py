@@ -4,19 +4,24 @@ import numpy as np
 
 from .inner_loop_controller import ArduPilotFlightController
 from .nonlinear_model import nonlinear_ode, payload_state
+from .perception import RangeLidar
 
 
 class HoverSimulation:
-    def __init__(self, target, dt=0.005) -> None:
+    def __init__(self, target, dt=0.005, lidar: RangeLidar | None = None) -> None:
         self.target = np.asarray(target, dtype=float).copy()
         self.dt = dt
         self.controller = ArduPilotFlightController()
+        self.lidar = lidar
         self.reset()
 
     def reset(self) -> None:
         self.state = np.zeros(16)
         self.state[:3] = self.target
         self.time = 0.0
+        if self.lidar is not None:
+            self.lidar.reset()
+            self.lidar.update(self.time, self.state[:3])
         self.control = self.compute_control()
 
     def compute_control(self) -> np.ndarray:
@@ -35,6 +40,18 @@ class HoverSimulation:
         self.time += self.dt
         if not np.isfinite(self.state).all():
             raise FloatingPointError("Simulation state became non-finite.")
+        if self.lidar is not None:
+            self.lidar.update(self.time, self.state[:3])
+
+    @property
+    def known_points(self) -> np.ndarray:
+        """Accumulated Nx3 local-world points for a future outer-loop/MPC controller.
+
+        The naive position-hold controller does not perform obstacle avoidance.
+        """
+        if self.lidar is None:
+            return np.empty((0, 3), dtype=float)
+        return self.lidar.known_points
 
     def nudge(self) -> None:
         """Apply a small velocity impulse to the drone to exercise position hold."""

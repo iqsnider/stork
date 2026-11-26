@@ -25,7 +25,8 @@ def load_excavation(path=DEFAULT_CLOUD, max_points=500_000, clearance=3.0) -> Ex
 
     XY origin is the full cloud's bounding-box midpoint. Z origin is the
     highest sample within 3 m horizontally of it (a local surface reference,
-    not a ground segmentation). Only display points are subsampled.
+    not a ground segmentation). The viewer and range sensor share the subsampled
+    scene; the origin is calculated from the full-resolution cloud.
     """
     if max_points < 1 or not np.isfinite(clearance) or clearance <= 0.4:
         raise ValueError("max_points must be positive; clearance must exceed 0.4 m.")
